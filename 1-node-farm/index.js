@@ -1,6 +1,6 @@
-const fs = require('fs')
-const http = require('http')
-const url = require('url')
+const fs = require('fs');
+const http = require('http');
+const url = require('url');
 /////////////////////////////////////////////////////////////
 // Files
 
@@ -32,23 +32,29 @@ const url = require('url')
 /////////////////////////////////////////////////////////////
 // Server
 const server = http.createServer((req, res) => {
-    console.log(req.url)
-    const pathName = req.url
+    console.log(req.url);
+    const pathName = req.url;
 
     if(pathName === '/' || pathName === '/overview') {
-        res.end('This is the OVERVIEW')
+        res.end('This is the OVERVIEW');
     } else if (pathName === '/product') {
-        res.end('This is the PRODUCT')
+        res.end('This is the PRODUCT');
+    } else if (pathName === '/api') {
+
+        fs.readFile(`${__dirname}/dev-data/data.json`, 'utf-8', (err, data) => {
+            const productData = JSON.parse(data);
+            res.end(data);
+        });
+
     } else {
         res.writeHead(404, {
             'Content-type': 'text/html',
             'my-own-header': 'hello-world'
-        })
-        res.end('<h1>Page not found!</h1>')
+        });
+        res.end('<h1>Page not found!</h1>');
     }
-    
 })
 
 server.listen(8000, '127.0.0.1', () => {
-    console.log('Listening to the requests on port 8000')
+    console.log('Listening to the requests on port 8000');
 })
